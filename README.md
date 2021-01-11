@@ -6,6 +6,7 @@ Search hotels in Japan with MLIT open data.
 
 - nkf
 - docker
+- python3.7
 
 ## How to use
 
@@ -18,3 +19,18 @@ Search hotels in Japan with MLIT open data.
         - it may have only `30/80/hotel_ichiran201812.csv`
 4. Start solr with Docker
     - `docker run --rm -p 8983:8983 -v "${PWD}/hotels_mlti:/var/solr/data/hotels_mlti" solr:8.7.0 solr-fg`
+5. Use `convert.py`
+
+```bash
+# Example of indexing
+$ cd converter
+$ python3 -m venv .venv/
+$ source ./venv/bin/activate
+$ pip install -r requirements.txt
+$ python3 convert.py ${PATH_OF_HOTELS}
+```
+
+## Example
+
+- Search hotels nearby Shin-Yokohama station.
+    - http://localhost:8983/solr/hotels_mlti/select?d=50.0&fl=*%2Cgeodist()&fq=%7B!geofilt%7D&pt=35.5087%2C139.6133&q=*%3A*&sfield=coordinate&sort=geodist()%20asc

@@ -28,6 +28,14 @@
     <!-- for nested documents (relationship tracking) -->
     <field name="_nest_path_" type="_nest_path_" /><fieldType name="_nest_path_" class="solr.NestPathField" />
 
+    <field name="name_ja" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="address_ja" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="tel" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="url" type="string" indexed="true" stored="true" multiValued="false" />
+    <field name="latitude" type="pfloat" indexed="true" stored="true" multiValued="false" />
+    <field name="longitude" type="pfloat" indexed="true" stored="true" multiValued="false" />
+    <field name="coordinate" type="location_rpt" indexed="true" stored="true" multiValued="false" />
+
     <dynamicField name="random_*" type="random"/>
     <dynamicField name="ignored_*" type="ignored"/>
 
@@ -105,7 +113,6 @@
     <!-- A text field with defaults appropriate for English: it tokenizes with StandardTokenizer,
          removes English stop words (lang/stopwords_en.txt), down cases, protects words from protwords.txt, and
          finally applies Porter's stemming.  The query time analyzer also applies synonyms from synonyms.txt. -->
-    <dynamicField name="*_txt_en" type="text_en"  indexed="true"  stored="true"/>
     <fieldType name="text_en" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -153,7 +160,6 @@
          cases will work, for example query "wi fi" will match
          document "WiFi" or "wi-fi".
     -->
-    <dynamicField name="*_txt_en_split" type="text_en_splitting"  indexed="true"  stored="true"/>
     <fieldType name="text_en_splitting" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="true">
       <analyzer type="index">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -188,7 +194,6 @@
 
     <!-- Less flexible matching, but less false matches.  Probably not ideal for product names,
          but may be good for SKUs.  Can insert dashes in the wrong place and still match. -->
-    <dynamicField name="*_txt_en_split_tight" type="text_en_splitting_tight"  indexed="true"  stored="true"/>
     <fieldType name="text_en_splitting_tight" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="true">
       <analyzer type="index">
         <tokenizer class="solr.WhitespaceTokenizerFactory"/>
@@ -228,7 +233,6 @@
       The subFields are an implementation detail of the fieldType, and end
       users normally should not need to know about them.
      -->
-    <dynamicField name="*_point" type="point"  indexed="true"  stored="true"/>
     <fieldType name="point" class="solr.PointType" dimension="2" subFieldSuffix="_d"/>
 
     <!-- A specialized field for geospatial search filters and distance sorting. -->
@@ -242,7 +246,6 @@
                geo="true" distErrPct="0.025" maxDistErr="0.001" distanceUnits="kilometers" />
 
     <!-- CJK bigram (see text_ja for a Japanese configuration using morphological analysis) -->
-    <dynamicField name="*_txt_cjk" type="text_cjk"  indexed="true"  stored="true"/>
     <fieldType name="text_cjk" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -259,7 +262,6 @@
          NOTE: If you want to optimize search for precision, use default operator AND in your request
          handler config (q.op) Use OR if you would like to optimize for recall (default).
     -->
-    <dynamicField name="*_txt_ja" type="text_ja"  indexed="true"  stored="true"/>
     <fieldType name="text_ja" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="false">
       <analyzer>
         <tokenizer class="solr.JapaneseTokenizerFactory" mode="search"/>
@@ -280,7 +282,6 @@
     </fieldType>
     
     <!-- Korean morphological analysis -->
-    <dynamicField name="*_txt_ko" type="text_ko"  indexed="true"  stored="true"/>
     <fieldType name="text_ko" class="solr.TextField" positionIncrementGap="100">
       <analyzer>
         <!-- Nori Korean morphological analyzer/tokenizer (KoreanTokenizer)
